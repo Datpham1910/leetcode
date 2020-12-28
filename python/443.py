@@ -75,6 +75,41 @@ class Solution:
         
         return chars
 
-
+    def compress1(self, chars: List[str]) -> int:
+        #od = OrderedDict(Counter(chars))
+        #print(od)
+        #for key in od.keys():
+        #    pass
+        n = len(chars) #length of the chars list
+        
+        #if only 1 char in the list then return it
+        #As 1 <= chars.length <= 2000, we don't need to think of empty chars list
+        if(n == 1):
+            return 0
+        #Otherwise, we will go for checking each character and whether it is same as the previous one
+        #if same as previous, we increase the count. Otherwise we extend the out_list with the char and 
+        #with count value when applicable (when count >1)
+        out_list = []
+        prev = chars[0] #start prev with the first element
+        count = 1 #so starting count from 1
+        for i in range(1,n):
+            current = chars[i] #setting the current character we are examining
+            if (current == prev): #if current = prev count increases
+                count +=1
+            else:                 #otherwise prepare for putting that char in the out_list
+                if(count == 1):
+                    out_list.extend([prev])
+                else:
+                    out_list.extend([prev, *list(str(count))])
+                count = 1 #count set to starting count again when current != prev
+            prev = current
+            if(i == n-1):   #don't forget about the corner case like when we come to the end of the char list 
+                if(count == 1):
+                    out_list.extend([prev])
+                else:
+                    out_list.extend([prev, *list(str(count))])
+        #print(out_list)
+        chars [:] = out_list[:] #As the problem expected the output list to be in place of the given chars list
+        return ''.join(out_list)
 if __name__ == "__main__":
     print(Solution().compress(["a","b","b","b","b","b","b","b","b","b","b","b","b"]))
