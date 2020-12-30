@@ -43,8 +43,9 @@ Constraints:
 2 <= k <= 100
 """
 
-from typing import DefaultDict
 from collections import defaultdict
+from typing import List
+
 
 class Solution:
     def containsPattern(self, arr: List[int], m: int, k: int) -> bool:
@@ -52,11 +53,11 @@ class Solution:
         patterns = defaultdict(int)
         start = end = 0
         n = len(arrstr)
-        
+
         while end < n:
             if (end-start)+1 > m:
                 start += 1
-                
+
             if (end-start)+1 == m:
                 substring = ','.join(arrstr[start:end+1])
                 pstart = start-m
@@ -67,8 +68,9 @@ class Solution:
                 if patterns[substring] >= k:
                     return True
             end += 1
-            
+
         return False
+
     def containsPattern1(self, arr: List[int], m: int, k: int) -> bool:
         n = len(arr)
         if n < m * k:
@@ -78,5 +80,7 @@ class Solution:
             if arr[i: i + m] * k == arr[i: i + m * k]:
                 return True
         return False
+
+
 if __name__ == "__main__":
-    print(Solution().containsPattern(arr = [1,2,4,4,4,4], m = 1, k = 3))
+    print(Solution().containsPattern(arr=[1, 2, 4, 4, 4, 4], m=1, k=3))
