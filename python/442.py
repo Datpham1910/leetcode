@@ -26,4 +26,16 @@ class Solution:
                 ans.append(n)
             s.add(n)
         return ans
-print(Solution().findDuplicates([4,3,2,7,8,2,3,1]))
+
+    def findDuplicates3(self, nums: List[int]) -> List[int]:
+        finals = []
+        for i in range(len(nums)):
+            if nums[abs(nums[i]) - 1] > 0:
+                nums[abs(nums[i]) - 1] = - 1 * nums[abs(nums[i]) - 1]
+            else:
+                finals.append(abs(nums[i]))
+                
+        return finals
+
+if __name__ == "__main__":
+    print(Solution().findDuplicates3())
