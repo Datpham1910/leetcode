@@ -59,6 +59,27 @@ class Solution:
                 heapq.heapreplace(pq, -workers[i][0])                
         
         return cost_min
+    
+    def mincostToHireWorkers3(self, quality: List[int], wage: List[int], K: int) -> float:
+        workers = sorted((w/q, q) for q,w in zip(quality, wage))
+        
+        heap = []
+        sum_quality = 0
+        for cost_per_quality, quality in workers[:K]:
+            heapq.heappush(heap, -quality)
+            sum_quality += quality
+            
+        result = sum_quality * cost_per_quality 
+        
+        for cost_per_quality, quality in workers[K:]:
+            if quality<-heap[0]:
+                sum_quality += quality + heap[0] # subtracting heap since it is negative
+                heapq.heapreplace(heap, -quality)
+                result = min(result, sum_quality * cost_per_quality)
+            
+        return result
 
 if __name__ == "__main__":
     print(Solution().mincostToHireWorkers(quality = [3,1,10,10,1], wage = [4,8,2,2,7], K = 3))
+    print(Solution().mincostToHireWorkers2(quality = [3,1,10,10,1], wage = [4,8,2,2,7], K = 3))
+    print(Solution().mincostToHireWorkers3(quality = [3,1,10,10,1], wage = [4,8,2,2,7], K = 3))
