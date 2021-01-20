@@ -35,6 +35,33 @@ class Solution:
         m = sorted(l)
         return m[k-1]
 
+    def kthSmallest2(self, matrix: List[List[int]], k: int) -> int:
+        if (matrix is None) or (matrix[0] is None):
+            return None
+
+        if len(matrix) == 1:
+            return matrix[0][0]
+
+        if k == 1:
+            return matrix[0][0]
+
+        h = []
+        for row in matrix:
+            heapq.heappush(h, row)
+        counter = 0
+        while k != counter:
+            r = heapq.heappop(h)
+            ele = r.pop(0)
+            counter += 1
+            if k == counter:
+                return ele
+            else:
+                if r:
+                    heapq.heappush(h, r)
+                    heapq.heapify(h)
+
+        return 0
+
 
 if __name__ == "__main__":
     Solution().kthSmallest(matrix=[
