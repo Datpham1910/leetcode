@@ -22,14 +22,17 @@ Note:
 1 <= S.length <= 20000
 S consists only of English lowercase letters.
 """
+import string
+
+
 class Solution:
     def removeDuplicates(self, S: str) -> str:
-        duplicates = [2*ch for ch in ascii_lowercase]
+        duplicates = [2*ch for ch in string.ascii_lowercase]
         prev_length = 0
         while prev_length != len(S):
             prev_length = len(S)
             for d in duplicates:
-                S = S.replace(d,'')
+                S = S.replace(d, '')
         return S
 
     def removeDuplicates2(self, S: str) -> str:
@@ -40,3 +43,7 @@ class Solution:
             else:
                 res.append(c)
         return "".join(res)
+
+
+if __name__ == "__main__":
+    print(Solution().removeDuplicates("abbaca"))
