@@ -24,6 +24,7 @@ intervals[i].length == 2
 """
 from typing import List
 
+
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
 
@@ -36,8 +37,8 @@ class Solution:
             if not merged or merged[-1][1] < interval[0]:
                 merged.append(interval)
             else:
-            # otherwise, there is overlap, so we merge the current and previous
-            # intervals.
+                # otherwise, there is overlap, so we merge the current and previous
+                # intervals.
                 merged[-1][1] = max(merged[-1][1], interval[1])
 
         # Time complexity : O(n\log{}n)O(nlogn)
@@ -45,5 +46,21 @@ class Solution:
         # Space complexity : O(\log N)O(logN) (or O(n)O(n))
         return merged
 
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        if len(intervals) == 0:
+            return []
+        intervals = sorted(intervals, key=lambda x: [x[0], x[1]])
+        print(intervals)
+        stack = [intervals[0]]
+        for idx in range(1, len(intervals)):
+            if intervals[idx][0] <= stack[-1][1]:
+                if intervals[idx][1] > stack[-1][1]:
+                    item = stack.pop()
+                    stack.append([item[0], intervals[idx][1]])
+            else:
+                stack.append(intervals[idx])
+        return stack
+
+
 if __name__ == "__main__":
-    print(Solution().maxProfit([7,1,5,3,6,4]))
+    print(Solution().maxProfit([7, 1, 5, 3, 6, 4]))

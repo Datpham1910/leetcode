@@ -35,6 +35,8 @@ Note:
 All initial positions are different.
 """
 from typing import List
+
+
 class Solution:
     def carFleet(self, target: int, position: List[int], speed: List[int]) -> int:
         cars = sorted(zip(position, speed))
@@ -42,12 +44,13 @@ class Solution:
         ans = 0
         while len(times) > 1:
             lead = times.pop()
-            if lead < times[-1]: ans += 1  # if lead arrives sooner, it can't be caught
-            else: times[-1] = lead # else, fleet arrives at later time 'lead'
+            if lead < times[-1]:
+                ans += 1  # if lead arrives sooner, it can't be caught
+            else:
+                times[-1] = lead  # else, fleet arrives at later time 'lead'
 
-        return ans + bool(times) # remaining car is fleet (if it exists)
+        return ans + bool(times)  # remaining car is fleet (if it exists)
 
-    
     def carFleet1(self, target: int, position: List[int], speed: List[int]) -> int:
         pos_and_speed = [(position[i], speed[i]) for i in range(len(position))]
         pos_and_speed.sort(key=lambda x: x[0])
@@ -71,5 +74,24 @@ class Solution:
                 fleets += 1
         return fleets
 
+    def carFleet3(self, target: int, position: List[int], speed: List[int]) -> int:
+        if not position or not speed:
+            return 0
+        for i in range(len(position)):
+            position[i] = (position[i], speed[i])
+        position.sort()
+        last = position.pop()
+        time = (target - last[0]) / last[1]
+        cnt = 1
+        for i in range(len(position)-1, -1, -1):
+            p, v = position[i]
+            if v * time + p < target:
+                cnt += 1
+                time = (target - p) / v
+        return cnt
+    # Time: O(NlogN)
+    # Extra Space: O(N)
+
+
 if __name__ == "__main__":
-    print(Solution().carFleet(target = 12, position = [10,8,0,5,3], speed = [2,4,1,1,3]))
+    print(Solution().carFleet(target=12, position=[10, 8, 0, 5, 3], speed=[2, 4, 1, 1, 3]))

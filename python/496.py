@@ -49,6 +49,21 @@ class Solution:
 
         return [table[num] if num in table else -1 for num in nums1]
 
+    def nextGreaterElement3(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        aDict = {el: i for i, el in enumerate(nums1)}
+        stack = []
+        finals = [-1 for _ in range(len(nums1))]
+        for x in nums2:
+            if not stack:
+                stack.append(x)
+            else:
+                while stack and x > stack[-1]:
+                    if stack[-1] in aDict:
+                        finals[aDict[stack[-1]]] = x
+                    stack.pop()
+                stack.append(x)
+        return finals
+
 
 if __name__ == "__main__":
     print(Solution().nextGreaterElement([2, 4], [1, 2, 3, 4]))

@@ -65,6 +65,29 @@ class Solution(object):
             ret += max_elem[0] + s
         return ret
 
+    def reorganizeString(self, S: str) -> str:
+        counter = collections.Counter(S)
+        aHeap = []
+        for item in counter:
+            aHeap.append((-counter[item], item))
+        heapq.heapify(aHeap)
+        print(aHeap)
+        final = ''
+        while len(aHeap) >= 2:
+            cnt1, val1 = heapq.heappop(aHeap)
+            cnt2, val2 = heapq.heappop(aHeap)
+            final += '{}{}'.format(val1, val2)
+            if cnt1 + 1 != 0:
+                heapq.heappush(aHeap, (cnt1 + 1, val1))
+            if cnt2 + 1 != 0:
+                heapq.heappush(aHeap, (cnt2 + 1, val2))
+        if len(aHeap) == 1:
+            cnt, val = heapq.heappop(aHeap)
+            if -cnt > 1:
+                return ''
+            final += abs(cnt) * val
+        return final
+
 
 if __name__ == "__main__":
     Solution().reorganizeString("aab")
