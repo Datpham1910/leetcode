@@ -1,0 +1,700 @@
+openapi: 3.0.2
+info:
+  title: Minerva eKYC Documentation
+  version: v1.0
+  x-logo:
+    url: 'https://minerva.vn/wp-content/uploads/2020/06/logo.png'
+  description: >
+    Not really a *pseudo-randum* number generator API.
+    This API uses [Markdown](http://daringfireball.net/projects/markdown/syntax)
+    in text:
+  
+    1. in this API description
+    
+    1. in operation summaries
+    
+    1. in operation descriptions
+    
+    1. in schema (model) titles and descriptions
+    
+    1. in schema (model) member descriptions
+
+servers:
+  - url: https://ekyc.minerva.vn/v1
+    description: Production server
+
+paths:
+  # ------------------------------ START ------------------------------
+  /ocr/cmnd/:
+    post:
+      tags:
+        - OCR
+      summary: 'OCR CMND'
+      description: 'Nhận ảnh CMND mặt trước hoặc sau, trích xuất thông tin của CMND' 
+      operationId: ocr_cmnd__post
+      parameters:
+        - in: header
+          name: TOKEN-ID
+          schema:
+            type: string
+          required: true
+          description: TOKEN ID
+
+        - in: header
+          name: TOKEN-KEY
+          schema:
+            type: string
+          required: true
+          description: TOKEN KEY
+
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_files_cmnd__post'
+
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OCRCmnd'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - HTTPBearer: []
+  # ------------------------------ END ------------------------------
+  /ocr/cccd/:
+    post:
+      tags:
+        - OCR
+      summary: 'OCR CCCD'
+      description: 'Nhận ảnh CCCD mặt trước hoặc sau, trích xuất thông tin của CCCD' 
+      operationId: ocr_cccd__post
+      parameters:
+        - in: header
+          name: TOKEN-ID
+          schema:
+            type: string
+          required: true
+          description: TOKEN ID
+
+        - in: header
+          name: TOKEN-KEY
+          schema:
+            type: string
+          required: true
+          description: TOKEN KEY
+          
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_files_cmnd__post'
+
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OCRCmnd'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - HTTPBearer: []
+  /ocr/passport/:
+    post:
+      tags:
+        - OCR
+      summary: 'OCR Passport'
+      description: 'Nhận ảnh Passport mặt trước hoặc sau, trích xuất thông tin của CMND' 
+      operationId: ocr_passport__post
+      parameters:
+        - in: header
+          name: TOKEN-ID
+          schema:
+            type: string
+          required: true
+          description: TOKEN ID
+
+        - in: header
+          name: TOKEN-KEY
+          schema:
+            type: string
+          required: true
+          description: TOKEN KEY
+          
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_files_cmnd__post'
+
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OCRPassport'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - HTTPBearer: []
+
+  /face/compare/:
+    post:
+      tags:
+        - Face
+      summary: 'Face Compare'
+      description: 'So sánh khuôn mặt trên giấy tờ với khuôn mặt chân dung' 
+      operationId: face_compare__post
+      parameters:
+        - in: header
+          name: TOKEN-ID
+          schema:
+            type: string
+          required: true
+          description: TOKEN ID
+
+        - in: header
+          name: TOKEN-KEY
+          schema:
+            type: string
+          required: true
+          description: TOKEN KEY
+          
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_face_compare__post'
+
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaceCompare'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - HTTPBearer: []
+
+  /face/insert/:
+    post:
+      tags:
+        - Face
+      summary: 'Insert Face'
+      description: 'Thêm hình ảnh khuôn mặt của người dùng vào hệ thống' 
+      operationId: face_insert__post
+      parameters:
+        - in: header
+          name: TOKEN-ID
+          schema:
+            type: string
+          required: true
+          description: TOKEN ID
+
+        - in: header
+          name: TOKEN-KEY
+          schema:
+            type: string
+          required: true
+          description: TOKEN KEY
+          
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_face_insert__post'
+
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaceCompare'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FailResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+        - HTTPBearer: []
+components:
+  schemas:
+    Body_files_cmnd__post:
+      title: Body_files_cmnd_api_v1_ocr_cmnd__post
+      required:
+        - file
+      type: object
+      properties:
+        file:
+          title: File
+          type: string
+          format: binary
+
+    Body_face_compare__post:
+      title: Body face compare
+      required:
+        - file
+      type: object
+      properties:
+        img_front:
+          title: Ảnh trên giấy tờ
+          type: string
+          format: binary
+        img_face:
+          title: Ảnh chụp thực tế
+          type: string
+          format: binary
+
+    Body_face_insert__post:
+      title: Body face compare
+      type: object
+      properties:
+        cart_type:
+          title: Loại giấy tờ
+        card_id:
+          title: Số CMND/CCCD/Passport
+          type: string
+        full_name:
+          title: Tên trên giấy tờ
+          type: string
+        date_of_birth:
+          title: Ngày sinh truyền lên
+          type: string
+          format: "DD/MM/YYYY"
+        img_face:
+          title: Ảnh chụp thực tế
+          type: string
+          format: binary
+
+      required:
+        - cart_type
+        - card_id
+        - img_face
+          
+    OCRCmnd:
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        data:
+          type: object
+          format: object
+          $ref: '#/components/schemas/OCRCmndData'
+    OCRCmndData:
+      type: object
+      properties:
+        id_number:
+          title: Số CMND
+          type: string
+        full_name:
+          title: Họ và tên
+          type: string
+        date_of_birth:
+          title: Ngày tháng năm sinh
+          type: string          
+        place_of_origin:
+          title: Nguyên quán
+          type: string          
+        place_of_residence:
+          title: Nơi ĐKHK thường trú
+          type: string
+        image:
+          title: Ảnh chân dung
+          type: string
+          format: base64
+        left_fingerprint:
+          title: Ảnh ngón trỏ trái
+          type: string
+          format: base64
+        right_fingerprint:
+          title: Ảnh ngón trỏ phải
+          type: string
+          format: base64
+        ethnicity:
+          title: Dân tộc
+          type: string
+        religion:
+          title: Tôn giáo
+          type: string
+        vestige:
+          title: Dấu vết riêng và dị hình
+          type: string
+        date_of_issue:
+          title: Ngày cấp
+          type: string
+          format: "DD/MM/YYYY"
+        place_of_issue:
+          title: Nơi cấp
+          type: string
+        gender:
+          title: Giới tính
+          type: string
+
+    OCRCccd:
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        data:
+          type: object
+          format: object
+          $ref: '#/components/schemas/OCRCccdData'
+    OCRCccdData:
+      type: object
+      properties:
+        nationality:
+          title: Quốc tịch
+          type: string
+          example: Việt Nam
+        date_of_expiry:
+          title: Ngày hết hạn
+          type: string
+          format: "DD/MM/YYYY"
+          example: "31/12/2030"
+        id_number:
+          title: Số CCCD
+          type: string
+        full_name:
+          title: Họ và tên
+          type: string
+        date_of_birth:
+          title: Ngày tháng năm sinh
+          type: string          
+        place_of_origin:
+          title: Nguyên quán
+          type: string          
+        place_of_residence:
+          title: Nơi ĐKHK thường trú
+          type: string
+        image:
+          title: Ảnh chân dung
+          type: string
+          format: base64
+        left_fingerprint:
+          title: Ảnh ngón trỏ trái
+          type: string
+          format: base64
+        right_fingerprint:
+          title: Ảnh ngón trỏ phải
+          type: string
+          format: base64
+        ethnicity:
+          title: Dân tộc
+          type: string
+        religion:
+          title: Tôn giáo
+          type: string
+        vestige:
+          title: Đặc điểm nhận dạng
+          type: string
+        date_of_issue:
+          title: Ngày cấp
+          type: string
+          format: "DD/MM/YYYY"
+        place_of_issue:
+          title: Nơi cấp
+          type: string
+        gender:
+          title: Giới tính
+          type: string
+
+    OCRPassport:
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        data:
+          type: object
+          format: object
+          $ref: '#/components/schemas/OCRPassportData'
+
+    FaceCompare:
+      type: object
+      properties:
+        success:
+          title: Success
+          type: boolean
+        data:
+          type: object
+          format: object
+          $ref: '#/components/schemas/FaceCompareData'
+
+    FaceCompareData:
+      type: object
+      properties:
+        code:
+          title: Code
+          type: string
+          example: "MATCH"
+        prob:
+          title: Tỉ lệ trùng khớp khuôn mặt
+          type: number
+          example: 80.00
+          maximum: 100
+          minimum: 1
+
+    OCRPassportData:
+      type: object
+      properties:
+        nationality:
+          title: Quốc tịch
+          type: string
+          example: Việt Nam
+        date_of_expiry:
+          title: Ngày hết hạn
+          type: string
+          format: "DD/MM/YYYY"
+          example: "31/12/2030"
+        
+    FailResponse:
+      title: FailResponse
+      required:
+        - error_code
+      type: object
+      properties:
+        error_code:
+          title: Error Code
+          type: string
+        description:
+          title: Description
+          type: string
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        errors:
+          title: Errors
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    PermissionInCreateScheme:
+      title: PermissionInCreateScheme
+      required:
+        - type
+      type: object
+      properties:
+        user_id:
+          title: User Id
+          type: integer
+        type:
+          $ref: '#/components/schemas/PermissionTypeEnum'
+        unlock_password:
+          title: Unlock Password
+          type: string
+          example: password
+        repeat_unlock_password:
+          title: Repeat Unlock Password
+          type: string
+          example: repeat_password
+        expired_time:
+          title: Expired Time
+          type: string
+          example: 'dd/mm/YYYY HH:MM:SS'
+    PermissionScheme:
+      title: PermissionScheme
+      required:
+        - id
+        - type
+      type: object
+      properties:
+        created_at:
+          title: Created At
+          type: string
+          format: date-time
+          example: 'dd/mm/YYYY HH:MM:SS'
+        created_by:
+          title: Created By
+          type: string
+        updated_at:
+          title: Updated At
+          type: string
+          format: date-time
+          example: 'dd/mm/YYYY HH:MM:SS'
+        updated_by:
+          title: Updated By
+          type: string
+        id:
+          title: Id
+          type: integer
+        user_id:
+          title: User Id
+          type: integer
+        user_name:
+          title: User Name
+          type: string
+        type:
+          title: Type
+          type: integer
+        has_unlock_password:
+          title: Has Unlock Password
+          type: boolean
+        expired_time:
+          title: Expired Time
+          type: string
+          format: date-time
+          example: 'dd/mm/YYYY HH:MM:SS'
+    PermissionTypeEnum:
+      title: PermissionTypeEnum
+      enum:
+        - 1
+        - 2
+        - 4
+        - 3
+      type: integer
+      description: An enumeration.
+    UserInCreateScheme:
+      title: UserInCreateScheme
+      required:
+        - name
+        - password
+        - email
+      type: object
+      properties:
+        name:
+          title: Name
+          type: string
+        password:
+          title: Password
+          type: string
+        email:
+          title: Email
+          type: string
+          format: email
+        avatar_url:
+          title: Avatar Url
+          type: string
+        mobile:
+          title: Mobile
+          type: string
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
+    TokenId:
+      type: apiKey
+      in: header
+      name: TOKEN-ID 
+    TokenKey:
+      type: apiKey
+      in: header
+      name: TOKEN-KEY 
+tags:
+  - name: OCR
+    description: Optical Character Recognition (Trích xuất thông tin)
+  # - name: folders
+  #   description: |-
+
+  #     **Constants:**
+
+  #     ITEM_TYPE_FOLDER = `1`
+
+  #     ITEM_TYPE_FILE = `2`
+
+  #     ROOT_FOLDER = `root`
+                  
+  # - name: files
+  #   description: |-
+
+  #     **Constants:**
+
+  #     ITEM_TYPE_FOLDER = `1`
+
+  #     ITEM_TYPE_FILE = `2`
+
+                      
+  # - name: permissions
+  #   description: |-
+
+  #     **Constants:**
+
+  #     PERMISSION_TYPE_OWNER = `1` -> Master rule -> can do anything
+
+  #     PERMISSION_TYPE_CREATE = `2`  -> Create file or folder
+
+  #     PERMISSION_TYPE_VIEW = `3` -> Public or specific for someone
+
+  #     PERMISSION_TYPE_UPDATE = `4` -> Rename, update share permission
+                      
