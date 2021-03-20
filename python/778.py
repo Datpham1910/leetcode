@@ -79,3 +79,109 @@ class Solution:
                     return next_t
                 visited[new_x][new_y] = 1
                 heapq.heappush(heap, (grid[new_x][new_y], next_t, new_x, new_y))
+
+"""
+Intuition
+We ned to find the path from point (0,0) to (N -1, N - 1). We can move to another 4-directionally adjacent square (up, down, right and left). However, we can only move to the next adjacent square if the value inside that square is less than or equal to t.
+
+Brute Force
+We'll do a DFS where we'll traverse all adjacent squares that satisify the requirement value of the next grid <= t. If we cannot move else where from the current grid[row][col], we increase the time t. Below is the implementation:
+
+class Solution(object):
+    def dfs(self, grid, t, row, col, visited):
+       if row < 0 or row > len(grid) - 1 or col < 0 or col > len(grid[0]) - 1:
+            return 0
+        
+        if row == len(grid) - 1 and col == len(grid[0]) - 1:
+            return 1
+        
+        visited.add((row, col))
+        
+        down = up = right = left = 0
+        
+        if row + 1 < len(grid) and grid[row + 1][col] <= t and (row + 1, col) not in visited:
+            down = self.dfs(grid, t, row + 1, col, visited)
+            
+        if row - 1 >= 0 and grid[row - 1][col] <= t and (row - 1, col) not in visited:
+            up = self.dfs(grid, t, row - 1, col, visited)
+            
+        if col + 1 < len(grid[0]) and grid[row][col + 1] <= t and (row, col + 1) not in visited:
+            right = self.dfs(grid, t, row, col + 1, visited)
+            
+        if col - 1 >= 0 and grid[row][col - 1] <= t and (row, col - 1) not in visited:
+            left = self.dfs(grid, t, row, col - 1, visited)
+            
+        return down or up or right or left
+    
+    def swimInWater(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not len(grid) or not len(grid[0]):
+            return 0
+        
+        t = grid[0][0]
+        visited = set()
+        while self.dfs(grid, t, 0, 0, visited) == 0:
+            t += 1
+            visited = set()
+        
+        return t
+At the begining of the program, I initialised t = grid[0][0] and increament it by 1 until I found a path that lead to (N-1, N-1). However, this approach will lead to TLE since in the worst-case, t can be very big and total time complexity become O(N2 * t).
+To optimise this, we can use binary search to find the minimum feasible water level. The range of our search will be [0, n*n-1].
+below is the DFS + Binary Search approach.
+
+class Solution(object):
+    def dfs(self, grid, t, row, col, visited):
+        if row < 0 or row > len(grid) - 1 or col < 0 or col > len(grid[0]) - 1 or grid[row][col] > t:
+            return 0
+        
+        if row == len(grid) - 1 and col == len(grid[0]) - 1:
+            return 1
+        
+        visited.add((row, col))
+        
+        down = up = right = left = 0
+        
+        if row + 1 < len(grid) and grid[row + 1][col] <= t and (row + 1, col) not in visited:
+            down = self.dfs(grid, t, row + 1, col, visited)
+            
+        if row - 1 >= 0 and grid[row - 1][col] <= t and (row - 1, col) not in visited:
+            up = self.dfs(grid, t, row - 1, col, visited)
+            
+        if col + 1 < len(grid[0]) and grid[row][col + 1] <= t and (row, col + 1) not in visited:
+            right = self.dfs(grid, t, row, col + 1, visited)
+            
+        if col - 1 >= 0 and grid[row][col - 1] <= t and (row, col - 1) not in visited:
+            left = self.dfs(grid, t, row, col - 1, visited)
+            
+        return down or up or right or left
+    
+    def swimInWater(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        if not len(grid) or not len(grid[0]):
+            return 0
+        
+        N = len(grid)
+        t_left = grid[0][0]
+        t_right = N * N - 1
+        
+        while t_left < t_right:
+            t_mid = t_left + (t_right - t_left) // 2
+            
+            visited = set()
+            if self.dfs(grid, t_mid, 0, 0, visited):
+                t_right = t_mid
+            else:
+                t_left = t_mid + 1
+           
+        
+        return t_left
+Time complexity: O(N2 log N).
+
+Hope this can be insightful, and happy learning!
+"""
